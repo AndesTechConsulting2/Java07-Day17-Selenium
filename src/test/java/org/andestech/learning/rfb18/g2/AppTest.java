@@ -30,11 +30,12 @@ public class AppTest
     System.out.println("+++ Class: " + this);
 
     String myProfile = "C:\\Users\\and\\AppData\\Local\\Google\\Chrome\\User Data";
+    myProfile =    "C:\\Users\\and\\AppData\\Local\\Chromium\\User Data";
 
     option = new ChromeOptions();
 
-        option.setPageLoadStrategy(PageLoadStrategy.NONE);
-        //option.addArguments("user-data-dir=" + myProfile);
+       // option.setPageLoadStrategy(PageLoadStrategy.NONE);
+      //  option.addArguments("user-data-dir=" + myProfile);
         option.setBinary("E:\\progs\\chrome-win\\chrome.exe");
     }
 
@@ -68,14 +69,14 @@ public class AppTest
         ArrayList<String> siteFound = new ArrayList<>();
 
 
-        List<WebElement> sites = wd.findElements(By.cssSelector(yandexListItem2));
+        List<WebElement> sites = null; //wd.findElements(By.cssSelector(yandexListItem2));
 
         int N = 30;
 
         for(int i =0; i<N; i++)
         {
            if(i!=0) wd.findElement(By.linkText("дальше")).click();
-           sites = wd.findElements(By.cssSelector(yandexListItem2));
+           sites = wd.findElements(By.cssSelector(yandexListItem));
 
 
             for(WebElement siteElement: sites)
@@ -87,7 +88,7 @@ public class AppTest
                 }
                 catch (org.openqa.selenium.NoSuchElementException el)
                 {
-                    continue;
+                    data = siteElement;
                 }
 
                 String siteInfo = data.getText();
@@ -104,7 +105,7 @@ public class AppTest
 
                 n++;
             }
-
+            System.out.println("---------------------- " + i + " --------------------------------");
         }
 
         System.out.println("--------------------------");
