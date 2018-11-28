@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 import static org.testng.Assert.assertTrue;
@@ -28,9 +29,13 @@ public class AppTest
             "E:\\drivers\\selenium\\chromedriver.exe");
     System.out.println("+++ Class: " + this);
 
-        option = new ChromeOptions();
-        option.setPageLoadStrategy(PageLoadStrategy.NONE);
+    String myProfile = "C:\\Users\\and\\AppData\\Local\\Google\\Chrome\\User Data";
 
+    option = new ChromeOptions();
+
+        option.setPageLoadStrategy(PageLoadStrategy.NONE);
+        option.addArguments("user-data-dir=" + myProfile);
+        option.setBinary("E:\\progs\\chrome-win\\chrome.exe");
     }
 
     @Test
@@ -50,7 +55,8 @@ public class AppTest
 
         wd.get("https://yandex.ru");
         WebElement searchTextElement = wd.findElement(By.id("text"));
-        searchTextElement.sendKeys("банки кредит Омск");
+        //searchTextElement.sendKeys("банки кредит Омск");
+        searchTextElement.sendKeys("банки Омск");
 //        searchTextElement.clear();
 //        searchTextElement.sendKeys("addd");
 
@@ -58,49 +64,49 @@ public class AppTest
 
         //------------------------------
         int n = 1;
+        ArrayList<Integer> bankRating = new ArrayList<>();
         ArrayList<String> siteFound = new ArrayList<>();
 
 
         List<WebElement> sites = wd.findElements(By.cssSelector(yandexListItem2));
 
-
-        for(WebElement siteElement: sites)
+        for(int i =0; i<15; i++)
         {
-            WebElement data = siteElement.findElement(By.tagName("b"));
-            String href = data.getText();
-
-           //  String host = siteElement.getAttribute("host");
-           //  String href = siteElement.getAttribute("href");
-           // if(host.contains("yandex")) continue;
-
-            System.out.println(n +  " -> " + href);
-            siteFound.add(href);
-            n++;
-        }
-
-
-        for(int i =0; i<3; i++)
-        {
-           wd.findElement(By.linkText("дальше")).click();
+           if(i!=0) wd.findElement(By.linkText("дальше")).click();
            sites = wd.findElements(By.cssSelector(yandexListItem2));
 
 
             for(WebElement siteElement: sites)
             {
-                WebElement data = siteElement.findElement(By.tagName("b"));
-                String href = data.getText();
+
+                WebElement data = null;
+                try {
+                    data = siteElement.findElement(By.tagName("b"));
+                }
+                catch (org.openqa.selenium.NoSuchElementException el)
+                {
+                    continue;
+                }
+
+                String siteInfo = data.getText();
+                if(siteInfo.contains("raiffeisen.ru")) bankRating.add(n);
 
                 String host = siteElement.getAttribute("host");
-               // String href = siteElement.getAttribute("href");
+                String href = siteElement.getAttribute("href");
               //  if(host.contains("yandex")) continue;
 
-                System.out.println(n +  " -> " + href);
-                siteFound.add(href);
+                String outInfo = n +  " -> " + siteInfo + " -> " + href;
+
+                System.out.println(outInfo);
+                siteFound.add(outInfo);
+
                 n++;
             }
 
         }
 
+        System.out.println("--------------------------");
+        if(!bankRating.isEmpty()) System.out.println("Found!!" + bankRating);
 
       //  Thread.sleep(2000);
 
