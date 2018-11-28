@@ -34,7 +34,7 @@ public class AppTest
     option = new ChromeOptions();
 
         option.setPageLoadStrategy(PageLoadStrategy.NONE);
-        option.addArguments("user-data-dir=" + myProfile);
+        //option.addArguments("user-data-dir=" + myProfile);
         option.setBinary("E:\\progs\\chrome-win\\chrome.exe");
     }
 
