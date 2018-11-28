@@ -42,8 +42,8 @@ public class AppTest
     public void testCaseChrome01() throws InterruptedException {
         wd = new ChromeDriver(option);
 
-        wd.manage().timeouts().pageLoadTimeout(2, TimeUnit.SECONDS);
-        wd.manage().timeouts().implicitlyWait(2,TimeUnit.SECONDS);
+        wd.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+        wd.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS);
 
 
         String yandexListItem=
@@ -56,7 +56,7 @@ public class AppTest
         wd.get("https://yandex.ru");
         WebElement searchTextElement = wd.findElement(By.id("text"));
         //searchTextElement.sendKeys("банки кредит Омск");
-        searchTextElement.sendKeys("банки Омск");
+        searchTextElement.sendKeys("банки вклады");
 //        searchTextElement.clear();
 //        searchTextElement.sendKeys("addd");
 
@@ -70,7 +70,9 @@ public class AppTest
 
         List<WebElement> sites = wd.findElements(By.cssSelector(yandexListItem2));
 
-        for(int i =0; i<15; i++)
+        int N = 30;
+
+        for(int i =0; i<N; i++)
         {
            if(i!=0) wd.findElement(By.linkText("дальше")).click();
            sites = wd.findElements(By.cssSelector(yandexListItem2));
